@@ -135,26 +135,6 @@ exps = Exps(
     datasets=[DATASET[name] for name in _datasets],
     models=[MODEL[name] for name in _models],
     strategies=_strategies,
-    # datasets=[
-    #     DATASET.DG5,
-    #     # DATASET.PACS,
-    #     # DATASET.DDN
-    # ],
-    # models=[
-    #     # MODEL.CRST_S,
-    #     MODEL.CVIT_S,
-    #     # MODEL.CRST_M,
-    #     # MODEL.CVIT
-    # ],
-    # strategies=[
-    #     # Never(),
-    #     # AveTrig(thr_acc=0.8),
-    #     # PerCTrig(thr_acc=0.8),
-    #     # MoEAve(thr_acc=0.8),
-    #     # MoEPerC(thr_acc=0.8),
-    #     # Cluster(thr_acc=0.8),
-    #     Driftguard(thr_group_acc=0.8, thr_sha_acc_pct=0.85, cluster_thr= 0.3, min_group_size=4),
-    # ],
     device="cuda:0" if torch.cuda.is_available() else "cpu",  # <--------------------
     # device="cpu",
 ).exps
@@ -171,23 +151,19 @@ def main() -> None:
         logger.info(
             f"[Experiment]: {exp.name}, Dataset: {exp.dataset.name}, Model: {exp.model.value}, Strategy: {exp.strategy.name}, lr: {exp.lr}"
         )
-        # cluster_thr, min_group_size = 0.12, 2 # <--------------------
         clustr = (
             str(exp.cluster_thr).split(".")[0] + str(exp.cluster_thr).split(".")[-1]
         )
         cfg = LaunchConfig(
-            # exp_root=f"exp/ablation_{exp.strategy.name}",
-            # exp_root=f"exp/{exp.strategy.name}_clu{clustr}_mgsize{min_group_size}",
             exp_root="results",
-            # exp_root=f"exp/ablations/mingrp/acc{str(exp.strategy.thr_sha_acc_pct).split('.')[-1]}_clu{str(exp.strategy.cluster_thr).split('.')[-1]}_mingrp{exp.strategy.min_group_size}",
             exp_name=exp.name,
             # data service
-            sample_size_per_step=3,  # 30 <--------------------
+            sample_size_per_step=30,  # 30 <--------------------
             dataset=exp.dataset,
             # client
             total_steps=30,  # 30 <--------------------
             batch_size=8,
-            num_clients=2, # 20 <--------------------
+            num_clients=20, # 20 <--------------------
             model=exp.model,
             device=exp.device,
             epochs=20,  # 20 <--------------------
@@ -293,11 +269,10 @@ def main() -> None:
 if __name__ == "__main__":
     if not ray.is_initialized():
         import os
-        os.environ["RAY_RUNTIME_ENV_IGNORE_GITIGNORE"] = "1"  # 放在 ray.init 前
-
+        os.environ["RAY_RUNTIME_ENV_IGNORE_GITIGNORE"] = "1"  
         ray.init(
             # address=cfg.ray_address,
-            address="auto",  # 有集群就连，没有就创建
+            address="auto",
             runtime_env={"working_dir": ".",},
             ignore_reinit_error=True,
             log_to_driver=True,
@@ -307,22 +282,3 @@ if __name__ == "__main__":
 
     if ray.is_initialized():
         ray.shutdown()
-
-# ray start --head --resources='{"my_res": 2, "ssd": 1}'
-# # worker 节点同理
-# ray start --address=<head-ip>:6379 --resources='{"my_res": 1}'
-
-# a = MyActor.options(
-#     num_cpus=2,
-#     num_gpus=1,
-#     resources={"ssd": 1, "node_elseptimo": 0.01}
-# ).remote()
-
-# ray start --head --port=9001 --resources='{"head":1}'
-# ray start --address=localhost:9001 --resources='{"pi_1":6}'
-# ray start --address=localhost:9001 --resources='{"pi_2":6}'
-# ray start --address=localhost:9001 --resources='{"pi_3":6}'
-# ray job submit --address http://localhost:8265 -- python src/driftguard/cli.py | tee log/log_ab.txt
-
-# 停止所有 ray 
-# ray stop --force

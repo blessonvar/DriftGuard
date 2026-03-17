@@ -19,10 +19,10 @@
         "Cluster-based ",
         "DriftGuard"
     ],
-    "retraining_thresholds": 0.01,
-    "global_retraining_thresholds": 0.8,
+    "retraining_thresholds": 0.6,
+    "global_retraining_thresholds": 0.9,
     "clustering_distance": 0.3,
-    "min_cluster_size": 4,
+    "min_cluster_size": 3,
     "gpu_per_client": 0.01,
     "pi": false
 }
