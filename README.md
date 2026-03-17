@@ -204,10 +204,5 @@ Each client result file contains two top-level fields:
 If you use DriftGuard in your research, please cite our paper:
 
 ```bibtex
-@article{DriftGuard2024,
-  title={DriftGuard: Adaptive Federated Learning for Model Heterogeneity and Asynchronous Data Drift},
-  author={[Your Name]},
-  journal={IEEE Internet of Things Journal},
-  year={2024}
-}
+TBD
 ```
