@@ -1,0 +1,28 @@
+{
+    "datasets": [
+        "DG5",
+        "PACS",
+        "DOMAINNET"
+    ],
+    "models": [
+        "CRST_S",
+        "CRST_M",
+        "CVIT",
+        "CVIT_S"
+    ],
+    "strategies": [
+        "Never",
+        "FCL-AveTrig",
+        "FCL-perDevice",
+        "PFL-AveTrig",
+        "PFL-perDevice",
+        "Cluster-based ",
+        "DriftGuard"
+    ],
+    "retraining_thresholds": 0.01,
+    "global_retraining_thresholds": 0.8,
+    "clustering_distance": 0.3,
+    "min_cluster_size": 4,
+    "gpu_per_client": 0.01,
+    "pi": false
+}
