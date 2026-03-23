@@ -204,5 +204,11 @@ Each client result file contains two top-level fields:
 If you use DriftGuard in your research, please cite our paper:
 
 ```bibtex
-TBD
+@article{han2026driftguard,
+  author       = {Yizhou Han and Di Wu and Blesson Varghese},
+  title        = {DriftGuard: Mitigating Asynchronous Data Drift in Federated Learning},
+  journal      = {arXiv preprint arXiv:2603.18872},
+  year         = {2026},
+  url          = {https://arxiv.org/abs/2603.18872}
+}
 ```
